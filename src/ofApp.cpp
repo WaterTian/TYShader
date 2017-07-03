@@ -4,26 +4,30 @@
 void ofApp::setup(){
     //sound
     mySound.load("star.mp3");
-    mySound.play();
+//    mySound.play();
     fftSmoothed =new float[128];
     for (int i=0; i<128; i++) {
         fftSmoothed[i] = 0;
     }
     
-    //textrue
-    ofImage img;
-    img.load("p0.jpg");
-    Texture1.allocate(img.getWidth(), img.getHeight(), GL_RGBA, false);
-    Texture1.loadData(img.getPixels());
+    //image
+    Image.load("p0.jpg");
+    Texture1.allocate(Image.getWidth(), Image.getHeight(), GL_RGBA, false);
+    Texture1.loadData(Image.getPixels());
     Texture1.generateMipmap();
     Texture1.setTextureWrap(GL_REPEAT, GL_REPEAT);
     
     
-    //video
+    //movie
+    Movie.load("movie.mov");
+    Movie.play();
+    
+    
+    //camera
     camWidth = 320;  // try to grab at this size.
     camHeight = 240;
     //we can now get back a list of devices.
-    vector<ofVideoDevice> devices = vidGrabber.listDevices();
+    vector<ofVideoDevice> devices = Camera.listDevices();
     for(int i = 0; i < devices.size(); i++){
         if(devices[i].bAvailable){
 //            ofLogNotice() << devices[i].id << ": " << devices[i].deviceName;
@@ -31,9 +35,9 @@ void ofApp::setup(){
             ofLogNotice() << devices[i].id << ": " << devices[i].deviceName << " - unavailable ";
         }
     }
-    vidGrabber.setDeviceID(0);
-    vidGrabber.setDesiredFrameRate(30);
-    vidGrabber.initGrabber(camWidth, camHeight);
+    Camera.setDeviceID(0);
+    Camera.setDesiredFrameRate(30);
+    Camera.initGrabber(camWidth, camHeight);
 
 }
 
@@ -41,11 +45,21 @@ void ofApp::setup(){
 void ofApp::update(){
     ofBackground(12,12,12);
     
-    //video
-    vidGrabber.update();
-    if(vidGrabber.isFrameNew()){
-        videoTexture = vidGrabber.getTexture();
-    }
+    ofSetWindowTitle(ofToString(ofGetFrameRate()));
+    
+    //Camera
+    Camera.update();
+    Texture2.allocate(Camera.getWidth(), Camera.getHeight(), GL_RGBA, false);
+    Texture2.loadData(Camera.getPixels());
+    Texture2.generateMipmap();
+    Texture2.setTextureWrap(GL_REPEAT, GL_REPEAT);
+    
+    //movie
+    Movie.update();
+    Texture3.allocate(Movie.getWidth(), Movie.getHeight(), GL_RGBA, false);
+    Texture3.loadData(Movie.getPixels());
+    Texture3.generateMipmap();
+    Texture3.setTextureWrap(GL_REPEAT, GL_REPEAT);
     
     //sound
     float * val = ofSoundGetSpectrum(128);	// request 128 values for fft
@@ -60,7 +74,7 @@ void ofApp::update(){
 //shader7 油画
 //shader8 sea
 //shader9 星空
-
+//shader10 铅笔画
 
 //--------------------------------------------------------------
 void ofApp::draw(){
@@ -75,17 +89,22 @@ void ofApp::draw(){
     
     shader.setUniform4f("u_sound",fftSmoothed[0],fftSmoothed[1],fftSmoothed[2],fftSmoothed[3]);
     
-    shader.setUniformTexture("u_video", videoTexture, 1);
-    
     shader.setUniformTexture("u_texture1", Texture1, 1);
+    
+    shader.setUniformTexture("u_video", Texture2, 1);
     
     ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
     shader.end();
     
     
     //video
-//    vidGrabber.draw(20, 20);
-//    videoTexture.draw(20 + camWidth, 20, camWidth, camHeight);
+    Camera.draw(20, 20);
+    
+    //movie
+//    Movie.draw(400, 20);
+    
+    //image
+//    Texture1.draw(20,400);
     
     //sound
     ofSetColor(255,255,255,200);

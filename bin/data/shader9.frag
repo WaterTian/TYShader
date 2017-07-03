@@ -8,7 +8,6 @@ uniform vec2 u_mouse;
 uniform float u_time;
 
 uniform vec4 u_sound;
-uniform sampler2D u_texture1;
 
 
 // http://www.fractalforums.com/new-theories-and-research/very-simple-formula-for-fractal-patterns/

@@ -24,11 +24,13 @@ class ofApp : public ofBaseApp{
     ofSoundPlayer mySound;
     float *fftSmoothed;
     
+    ofImage Image;
+    ofVideoPlayer Movie;
+    ofVideoGrabber Camera;
     ofTexture Texture1;
+    ofTexture Texture2;
+    ofTexture Texture3;
     
-	
-    ofVideoGrabber vidGrabber;
-    ofTexture videoTexture;
     int camWidth;
     int camHeight;
 };
