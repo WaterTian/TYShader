@@ -75,12 +75,14 @@ void ofApp::update(){
 //shader8 sea
 //shader9 星空
 //shader10 铅笔画
+//shader11 水面
+//shader12 老电视
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
     ofShader shader;
-    shader.load("","shader10.frag");
+    shader.load("","shader11.frag");
     
     shader.begin();
     shader.setUniform1f("u_time", ofGetElapsedTimef());

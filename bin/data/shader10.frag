@@ -10,15 +10,12 @@ uniform vec4 u_sound;
 uniform sampler2D u_video;
 uniform sampler2D u_texture1;
 
-
-
-float d = 1.; // kernel offset  笔触粗细
-
+float d = 2.; // kernel offset  笔触粗细
 float lookup(vec2 p, float dx, float dy)
 {
     vec2 uv = -(p.xy + vec2(dx * d, dy * d)) / u_resolution.xy;
     vec4 c = texture2D(u_video, uv.xy);
-    float res = u_resolution.y / 1080.;
+    float res = 1.;
     // return as luma
     return res*c.r + res*c.g + res*c.b;
 }
@@ -26,7 +23,6 @@ float lookup(vec2 p, float dx, float dy)
 void main()
 {
     vec2 p = gl_FragCoord.xy;
-    
     // simple sobel edge detection
     float gx = 0.0;
     gx += -1.0 * lookup(p, -1.0, -1.0);
