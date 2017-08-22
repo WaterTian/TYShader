@@ -82,7 +82,7 @@ void ofApp::update(){
 void ofApp::draw(){
     
     ofShader shader;
-    shader.load("","shader11.frag");
+    shader.load("","shader13.frag");
     
     shader.begin();
     shader.setUniform1f("u_time", ofGetElapsedTimef());
@@ -91,7 +91,7 @@ void ofApp::draw(){
     
     shader.setUniform4f("u_sound",fftSmoothed[0],fftSmoothed[1],fftSmoothed[2],fftSmoothed[3]);
     
-    shader.setUniformTexture("u_texture1", Texture1, 1);
+    shader.setUniformTexture("u_texture", Texture1, 1);
     
     shader.setUniformTexture("u_video", Texture2, 1);
     
@@ -103,10 +103,10 @@ void ofApp::draw(){
     Camera.draw(20, 20);
     
     //movie
-//    Movie.draw(400, 20);
+    Movie.draw(400, 20);
     
     //image
-//    Texture1.draw(20,400);
+    Texture1.draw(20,400);
     
     //sound
     ofSetColor(255,255,255,200);
